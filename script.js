@@ -1,5 +1,6 @@
 const {countriesData} = require('./data')
 const fs = require("fs");
+const { config } = require('process');
 
 countriesData.forEach((element,index) => {
     delete element.idd;
@@ -23,8 +24,22 @@ countriesData.forEach((element,index) => {
     console.log(`${index+1}: Completed`)
 });
 
+function compareStrings(a, b) {
+    // Assuming you want case-insensitive comparison
+    a = a.toLowerCase();
+    b = b.toLowerCase();
 
-fs.writeFile("c.json", JSON.stringify(countriesData), (err) => {
+    return (a < b) ? -1 : (a > b) ? 1 : 0;
+}
+
+countriesData.sort(function (a, b) {
+    return compareStrings(a.name.common, b.name.common);
+})
+
+// console.log(countriesData)
+
+
+fs.writeFile("countries.json", JSON.stringify(countriesData), (err) => {
     if (err) throw err;
     console.log("Completed!");
  });
